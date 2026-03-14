@@ -1,6 +1,6 @@
 # mail-senderpy
 
-Async bulk email sender with Jinja2 templates and CLI.
+Bulk email sender with Jinja2 templates and CLI.
 
 Send personalized emails to a list of users using any SMTP provider (Gmail, Outlook, AWS SES, SendGrid, etc.).
 
@@ -15,23 +15,24 @@ pip install mail-senderpy
 ### Python API
 
 ```python
-import asyncio
 from mail_senderpy import send_message
 
-result = asyncio.run(send_message(
+result = send_message(
     env_path=".env",
     users_path="users.json",
     template_path="template.html",
-))
+)
 
 print(result)
 # {"success": 18, "failed": 2, "errors": [{"email": "...", "error": "..."}]}
 ```
 
-Or use `await` in an async context:
+Or use `send_message_async` in an async context:
 
 ```python
-result = await send_message(
+from mail_senderpy import send_message_async
+
+result = await send_message_async(
     env_path=".env",
     users_path="users.json",
     template_path="template.html",
@@ -126,7 +127,7 @@ The library validates all inputs before sending and raises descriptive errors:
 from mail_senderpy import send_message, MailSenderError
 
 try:
-    result = await send_message(env_path=".env", users_path="users.json", template_path="template.html")
+    result = send_message(env_path=".env", users_path="users.json", template_path="template.html")
 except MailSenderError as e:
     print(f"Error: {e}")
     print(f"Details: {e.details}")
