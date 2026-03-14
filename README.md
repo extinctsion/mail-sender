@@ -1,4 +1,4 @@
-# mail-sender
+# mail-senderpy
 
 Async bulk email sender with Jinja2 templates and CLI.
 
@@ -7,7 +7,7 @@ Send personalized emails to a list of users using any SMTP provider (Gmail, Outl
 ## Installation
 
 ```bash
-pip install mail-sender
+pip install mail-senderpy
 ```
 
 ## Quick Start
@@ -41,7 +41,7 @@ result = await send_message(
 ### CLI
 
 ```bash
-mail-sender send --env .env --users users.json --template template.html
+mail-senderpy send --env .env --users users.json --template template.html
 ```
 
 Options:
@@ -99,7 +99,7 @@ Pass a built-in template name instead of a file path:
 - `announcement.html` — announcement layout
 
 ```bash
-mail-sender send --template marketing_email.html
+mail-senderpy send --template marketing_email.html
 ```
 
 ## Return Value

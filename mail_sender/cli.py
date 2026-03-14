@@ -1,4 +1,4 @@
-"""CLI interface for mail-sender."""
+"""CLI interface for mail-senderpy."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import typer
 from mail_sender.sender import send_message
 from mail_sender.validator import MailSenderError
 
-app = typer.Typer(name="mail-sender", help="Bulk email sender with Jinja2 templates.")
+app = typer.Typer(name="mail-senderpy", help="Bulk email sender with Jinja2 templates.")
 
 
 @app.command("send")

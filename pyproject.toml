@@ -20,7 +20,7 @@ dependencies = [
 dev = ["pytest>=7", "pytest-asyncio>=0.21", "coverage"]
 
 [project.scripts]
-mail-sender = "mail_sender.cli:app"
+mail-senderpy = "mail_sender.cli:app"
 
 [tool.setuptools_scm]
 fallback_version = "0.1.0"
