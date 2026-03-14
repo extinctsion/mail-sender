@@ -8,8 +8,8 @@ import logging
 
 import typer
 
-from mail_sender.sender import send_message
-from mail_sender.validator import MailSenderError
+from mail_senderpy.sender import send_message
+from mail_senderpy.validator import MailSenderError
 
 app = typer.Typer(name="mail-senderpy", help="Bulk email sender with Jinja2 templates.")
 

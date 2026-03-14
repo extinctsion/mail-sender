@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from mail_sender.validator import SmtpConfig
+from mail_senderpy.validator import SmtpConfig
 
 
 @pytest.fixture()

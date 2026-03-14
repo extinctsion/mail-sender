@@ -1,4 +1,4 @@
-"""Tests for mail_sender.validator."""
+"""Tests for mail_senderpy.validator."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from mail_sender.validator import (
+from mail_senderpy.validator import (
     ConfigError,
     SmtpConfig,
     TemplateError,
