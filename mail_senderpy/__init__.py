@@ -1,7 +1,7 @@
 """mail-senderpy: Async bulk email sender with Jinja2 templates and CLI."""
 
-from mail_sender.sender import send_message
-from mail_sender.validator import (
+from mail_senderpy.sender import send_message
+from mail_senderpy.validator import (
     ConfigError,
     MailSenderError,
     TemplateError,

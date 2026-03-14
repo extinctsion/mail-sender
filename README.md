@@ -16,7 +16,7 @@ pip install mail-senderpy
 
 ```python
 import asyncio
-from mail_sender import send_message
+from mail_senderpy import send_message
 
 result = asyncio.run(send_message(
     env_path=".env",
@@ -123,7 +123,7 @@ The library validates all inputs before sending and raises descriptive errors:
 - `TemplateError` — template file not found
 
 ```python
-from mail_sender import send_message, MailSenderError
+from mail_senderpy import send_message, MailSenderError
 
 try:
     result = await send_message(env_path=".env", users_path="users.json", template_path="template.html")

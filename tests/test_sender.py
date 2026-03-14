@@ -1,4 +1,4 @@
-"""Tests for mail_sender.sender."""
+"""Tests for mail_senderpy.sender."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mail_sender.sender import send_message
+from mail_senderpy.sender import send_message
 
 
 @pytest.fixture()
@@ -19,7 +19,7 @@ def _setup_files(tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Pa
 @pytest.mark.asyncio
 class TestSendMessage:
     async def test_all_success(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
@@ -37,7 +37,7 @@ class TestSendMessage:
     async def test_partial_failure(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
         import smtplib as real_smtplib
 
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
             mock_smtp_mod.SMTP_SSL = MagicMock()
@@ -63,7 +63,7 @@ class TestSendMessage:
     async def test_all_fail(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
         import smtplib as real_smtplib
 
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
             mock_server.send_message.side_effect = real_smtplib.SMTPException("down")
@@ -79,7 +79,7 @@ class TestSendMessage:
         assert result["failed"] == 2
 
     async def test_template_rendering(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
@@ -97,7 +97,7 @@ class TestSendMessage:
         assert "alice@example.com" in html_body
 
     async def test_subject_rendering(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
@@ -113,7 +113,7 @@ class TestSendMessage:
         assert first_call_msg["Subject"] == "Hi Alice"
 
     async def test_tls_called(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
@@ -136,7 +136,7 @@ class TestSendMessage:
             "SMTP_TLS=true\n"
         )
 
-        with patch("mail_sender.sender.smtplib") as mock_smtp_mod:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP_SSL.return_value = mock_server
 
@@ -152,8 +152,8 @@ class TestSendMessage:
 
     async def test_delay_between_sends(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
         with (
-            patch("mail_sender.sender.smtplib") as mock_smtp_mod,
-            patch("mail_sender.sender.asyncio.sleep") as mock_sleep,
+            patch("mail_senderpy.sender.smtplib") as mock_smtp_mod,
+            patch("mail_senderpy.sender.asyncio.sleep") as mock_sleep,
         ):
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
@@ -170,7 +170,7 @@ class TestSendMessage:
         mock_sleep.assert_called_with(5.0)
 
     async def test_validation_errors_propagate(self, tmp_path: Path) -> None:
-        from mail_sender.validator import ConfigError
+        from mail_senderpy.validator import ConfigError
 
         with pytest.raises(ConfigError):
             await send_message(

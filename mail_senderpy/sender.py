@@ -12,9 +12,9 @@ from typing import Any, TypedDict
 
 import jinja2
 
-from mail_sender.validator import SmtpConfig, User, resolve_template, validate_env_config, validate_users
+from mail_senderpy.validator import SmtpConfig, User, resolve_template, validate_env_config, validate_users
 
-logger = logging.getLogger("mail_sender")
+logger = logging.getLogger("mail_senderpy")
 
 
 class ErrorDetail(TypedDict):
