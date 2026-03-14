@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mail-sender"
+name = "mail-senderpy"
 dynamic = ["version"]
 description = "Async bulk email sender with Jinja2 templates and CLI"
 readme = "README.md"
