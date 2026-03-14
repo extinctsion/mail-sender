@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 
@@ -29,14 +28,12 @@ def send_cmd(
     )
 
     try:
-        result = asyncio.run(
-            send_message(
-                env_path=env,
-                users_path=users,
-                template_path=template,
-                subject=subject,
-                delay=delay,
-            )
+        result = send_message(
+            env_path=env,
+            users_path=users,
+            template_path=template,
+            subject=subject,
+            delay=delay,
         )
     except MailSenderError as exc:
         typer.echo(f"Error: {exc}", err=True)
