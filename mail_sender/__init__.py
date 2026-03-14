@@ -1,4 +1,4 @@
-"""mail-sender: Async bulk email sender with Jinja2 templates and CLI."""
+"""mail-senderpy: Async bulk email sender with Jinja2 templates and CLI."""
 
 from mail_sender.sender import send_message
 from mail_sender.validator import (
@@ -13,7 +13,7 @@ from mail_sender.validator import (
 try:
     from importlib.metadata import version
 
-    __version__ = version("mail-sender")
+    __version__ = version("mail-senderpy")
 except Exception:
     __version__ = "0.0.0-dev"
 

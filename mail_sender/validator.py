@@ -15,7 +15,7 @@ from dotenv import dotenv_values
 # ---------------------------------------------------------------------------
 
 class MailSenderError(Exception):
-    """Base exception for all mail-sender errors."""
+    """Base exception for all mail-senderpy errors."""
 
     def __init__(self, message: str, details: list[str] | None = None) -> None:
         self.details = details or []
