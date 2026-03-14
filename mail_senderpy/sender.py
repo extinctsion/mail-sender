@@ -57,7 +57,7 @@ def _send_single_email(
         server.quit()
 
 
-async def send_message(
+async def send_message_async(
     *,
     env_path: str | Path = ".env",
     users_path: str | Path = "users.json",
@@ -65,7 +65,7 @@ async def send_message(
     subject: str = "Hello, {{name}}!",
     delay: float = 10.0,
 ) -> SendResult:
-    """Send personalized bulk emails.
+    """Send personalized bulk emails (async version).
 
     Args:
         env_path: Path to ``.env`` file with SMTP credentials.
@@ -123,3 +123,26 @@ async def send_message(
             await asyncio.sleep(delay)
 
     return {"success": success, "failed": failed, "errors": errors}
+
+
+def send_message(
+    *,
+    env_path: str | Path = ".env",
+    users_path: str | Path = "users.json",
+    template_path: str | Path = "template.html",
+    subject: str = "Hello, {{name}}!",
+    delay: float = 10.0,
+) -> SendResult:
+    """Send personalized bulk emails (synchronous wrapper).
+
+    See :func:`send_message_async` for full documentation.
+    """
+    return asyncio.run(
+        send_message_async(
+            env_path=env_path,
+            users_path=users_path,
+            template_path=template_path,
+            subject=subject,
+            delay=delay,
+        )
+    )

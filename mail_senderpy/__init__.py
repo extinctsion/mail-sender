@@ -1,6 +1,6 @@
 """mail-senderpy: Async bulk email sender with Jinja2 templates and CLI."""
 
-from mail_senderpy.sender import send_message
+from mail_senderpy.sender import send_message, send_message_async
 from mail_senderpy.validator import (
     ConfigError,
     MailSenderError,
@@ -19,6 +19,7 @@ except Exception:
 
 __all__ = [
     "send_message",
+    "send_message_async",
     "MailSenderError",
     "ConfigError",
     "UsersFileError",

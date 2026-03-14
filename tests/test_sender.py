@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mail_senderpy.sender import send_message
+from mail_senderpy.sender import send_message, send_message_async
 
 
 @pytest.fixture()
@@ -23,7 +23,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
-            result = await send_message(
+            result = await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -47,7 +47,7 @@ class TestSendMessage:
                 None,
             ]
 
-            result = await send_message(
+            result = await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -68,7 +68,7 @@ class TestSendMessage:
             mock_smtp_mod.SMTP.return_value = mock_server
             mock_server.send_message.side_effect = real_smtplib.SMTPException("down")
 
-            result = await send_message(
+            result = await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -83,7 +83,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
-            await send_message(
+            await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -101,7 +101,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
-            await send_message(
+            await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -117,7 +117,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
-            await send_message(
+            await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -140,7 +140,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP_SSL.return_value = mock_server
 
-            await send_message(
+            await send_message_async(
                 env_path=env,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -158,7 +158,7 @@ class TestSendMessage:
             mock_server = MagicMock()
             mock_smtp_mod.SMTP.return_value = mock_server
 
-            await send_message(
+            await send_message_async(
                 env_path=tmp_env_file,
                 users_path=tmp_users_file,
                 template_path=tmp_template_file,
@@ -173,9 +173,27 @@ class TestSendMessage:
         from mail_senderpy.validator import ConfigError
 
         with pytest.raises(ConfigError):
-            await send_message(
+            await send_message_async(
                 env_path=tmp_path / "missing.env",
                 users_path="users.json",
                 template_path="template.html",
                 delay=0,
             )
+
+
+class TestSendMessageSync:
+    def test_sync_wrapper(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
+            mock_server = MagicMock()
+            mock_smtp_mod.SMTP.return_value = mock_server
+
+            result = send_message(
+                env_path=tmp_env_file,
+                users_path=tmp_users_file,
+                template_path=tmp_template_file,
+                delay=0,
+            )
+
+        assert result["success"] == 2
+        assert result["failed"] == 0
+        assert result["errors"] == []

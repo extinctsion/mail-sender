@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 from typer.testing import CliRunner
 
@@ -16,7 +16,7 @@ class TestCli:
     def test_send_success(self) -> None:
         mock_result = {"success": 2, "failed": 0, "errors": []}
 
-        with patch("mail_senderpy.cli.send_message", new_callable=AsyncMock, return_value=mock_result):
+        with patch("mail_senderpy.cli.send_message", return_value=mock_result):
             result = runner.invoke(app, [
                 "send",
                 "--env", "fake.env",
@@ -34,7 +34,7 @@ class TestCli:
             "errors": [{"email": "x@y.com", "error": "timeout"}],
         }
 
-        with patch("mail_senderpy.cli.send_message", new_callable=AsyncMock, return_value=mock_result):
+        with patch("mail_senderpy.cli.send_message", return_value=mock_result):
             result = runner.invoke(app, [
                 "send",
                 "--env", "fake.env",
@@ -47,7 +47,6 @@ class TestCli:
     def test_send_config_error(self) -> None:
         with patch(
             "mail_senderpy.cli.send_message",
-            new_callable=AsyncMock,
             side_effect=ConfigError("bad config", details=["missing SMTP_SERVER"]),
         ):
             result = runner.invoke(app, [
