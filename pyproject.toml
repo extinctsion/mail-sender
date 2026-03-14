@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mail-sender"
+dynamic = ["version"]
+description = "Async bulk email sender with Jinja2 templates and CLI"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "Mail Sender Contributors"}]
+dependencies = [
+    "jinja2>=3.1",
+    "python-dotenv>=1.0",
+    "typer[all]>=0.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-asyncio>=0.21", "coverage"]
+
+[project.scripts]
+mail-sender = "mail_sender.cli:app"
+
+[tool.setuptools_scm]
+fallback_version = "0.1.0"
+
+[tool.setuptools.packages.find]
+include = ["mail_sender*"]
+
+[tool.setuptools.package-data]
+mail_sender = ["templates/*.html"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

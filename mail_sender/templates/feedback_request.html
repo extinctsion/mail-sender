@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We'd Love Your Feedback</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#ffffff;">
+        <tr>
+            <td style="padding:30px 20px;">
+                <h1 style="color:#333333;font-size:24px;margin:0 0 20px;">We'd Love Your Feedback</h1>
+                <p style="font-size:16px;color:#333333;margin:0 0 15px;">Hi {{ name }},</p>
+                <p style="font-size:16px;color:#333333;margin:0 0 15px;">
+                    Thank you for being part of our community. Your opinion matters to us, and we'd
+                    really appreciate it if you could take a moment to share your thoughts.
+                </p>
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:25px auto;">
+                    <tr>
+                        <td style="background-color:#27AE60;border-radius:4px;padding:12px 24px;">
+                            <a href="{{ feedback_url | default('#') }}" style="color:#ffffff;text-decoration:none;font-size:16px;font-weight:bold;">Share Feedback</a>
+                        </td>
+                    </tr>
+                </table>
+                <p style="font-size:14px;color:#666666;margin:20px 0 0;">
+                    It only takes a couple of minutes. Thank you!
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:#f4f4f4;padding:20px;text-align:center;font-size:12px;color:#999999;">
+                <p style="margin:0;">Sent to {{ email }}</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
