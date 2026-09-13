@@ -181,6 +181,64 @@ class TestSendMessage:
             )
 
 
+    async def test_verbose_output(
+        self,
+        tmp_env_file: Path,
+        tmp_users_file: Path,
+        tmp_template_file: Path,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
+            mock_server = MagicMock()
+            mock_smtp_mod.SMTP.return_value = mock_server
+
+            # verbose=False (default) should not print to terminal
+            await send_message_async(
+                env_path=tmp_env_file,
+                users_path=tmp_users_file,
+                template_path=tmp_template_file,
+                delay=0,
+            )
+            captured = capsys.readouterr()
+            assert captured.out == ""
+
+            # verbose=True should print success logs to terminal
+            await send_message_async(
+                env_path=tmp_env_file,
+                users_path=tmp_users_file,
+                template_path=tmp_template_file,
+                delay=0,
+                verbose=True,
+            )
+            captured = capsys.readouterr()
+            assert "Email sent to alice@example.com" in captured.out
+            assert "Email sent to bob@example.com" in captured.out
+
+    async def test_verbose_output_on_failure(
+        self,
+        tmp_env_file: Path,
+        tmp_users_file: Path,
+        tmp_template_file: Path,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        import smtplib as real_smtplib
+
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
+            mock_server = MagicMock()
+            mock_smtp_mod.SMTP.return_value = mock_server
+            mock_server.send_message.side_effect = real_smtplib.SMTPException("network timeout")
+
+            await send_message_async(
+                env_path=tmp_env_file,
+                users_path=tmp_users_file,
+                template_path=tmp_template_file,
+                delay=0,
+                verbose=True,
+            )
+            captured = capsys.readouterr()
+            assert "Failed to send to alice@example.com: network timeout" in captured.out
+
+
 class TestSendMessageSync:
     def test_sync_wrapper(self, tmp_env_file: Path, tmp_users_file: Path, tmp_template_file: Path) -> None:
         with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
@@ -197,3 +255,27 @@ class TestSendMessageSync:
         assert result["success"] == 2
         assert result["failed"] == 0
         assert result["errors"] == []
+
+    def test_sync_wrapper_verbose(
+        self,
+        tmp_env_file: Path,
+        tmp_users_file: Path,
+        tmp_template_file: Path,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        with patch("mail_senderpy.sender.smtplib") as mock_smtp_mod:
+            mock_server = MagicMock()
+            mock_smtp_mod.SMTP.return_value = mock_server
+
+            result = send_message(
+                env_path=tmp_env_file,
+                users_path=tmp_users_file,
+                template_path=tmp_template_file,
+                delay=0,
+                verbose=True,
+            )
+
+        assert result["success"] == 2
+        captured = capsys.readouterr()
+        assert "Email sent to alice@example.com" in captured.out
+        assert "Email sent to bob@example.com" in captured.out

@@ -21,6 +21,7 @@ result = send_message(
     env_path=".env",
     users_path="users.json",
     template_path="template.html",
+    verbose=True,  # prints real-time logs to the terminal
 )
 
 print(result)
@@ -36,6 +37,7 @@ result = await send_message_async(
     env_path=".env",
     users_path="users.json",
     template_path="template.html",
+    verbose=True,
 )
 ```
 
