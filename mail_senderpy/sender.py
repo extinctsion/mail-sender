@@ -64,6 +64,7 @@ async def send_message_async(
     template_path: str | Path = "template.html",
     subject: str = "Hello, {{name}}!",
     delay: float = 10.0,
+    verbose: bool = False,
 ) -> SendResult:
     """Send personalized bulk emails (async version).
 
@@ -73,6 +74,7 @@ async def send_message_async(
         template_path: Path to an HTML template or name of a built-in template.
         subject: Email subject line (supports Jinja2 placeholders).
         delay: Seconds to wait between each email send.
+        verbose: If True, print progress logs to the terminal.
 
     Returns:
         A dict with ``success``, ``failed``, and ``errors`` keys.
@@ -112,11 +114,15 @@ async def send_message_async(
             )
             success += 1
             logger.info("Email sent to %s", user.email)
+            if verbose:
+                print(f"Email sent to {user.email}")
         except Exception as exc:
             failed += 1
             error_msg = str(exc)
             errors.append({"email": user.email, "error": error_msg})
             logger.error("Failed to send to %s: %s", user.email, error_msg)
+            if verbose:
+                print(f"Failed to send to {user.email}: {error_msg}")
 
         # Wait between sends (skip after last email)
         if idx < len(users) - 1:
@@ -132,6 +138,7 @@ def send_message(
     template_path: str | Path = "template.html",
     subject: str = "Hello, {{name}}!",
     delay: float = 10.0,
+    verbose: bool = False,
 ) -> SendResult:
     """Send personalized bulk emails (synchronous wrapper).
 
@@ -144,5 +151,6 @@ def send_message(
             template_path=template_path,
             subject=subject,
             delay=delay,
+            verbose=verbose,
         )
     )
